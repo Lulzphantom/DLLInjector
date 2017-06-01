@@ -15,8 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Security;
-
-
+using Microsoft.Win32;
 
 namespace DLLInjector
 {
@@ -34,6 +33,23 @@ namespace DLLInjector
             InitializeComponent();            
         }
 
+        private void CancelBT_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            CancelInjection();
+        }
+
+        //OpenFileDialog DLL
+        private void SearchDll_Click(object sender, RoutedEventArgs e)
+        {
+            var FileDialog = new OpenFileDialog();
+            FileDialog.Multiselect = false;
+            FileDialog.Filter = "DLL files (*.dll)|*.dll";
+            if (FileDialog.ShowDialog() == true)
+            {
+                config.DLLPath = FileDialog.FileName;
+                DllTextBox.Text = System.IO.Path.GetFileName(FileDialog.FileName);
+            }
+        }
 
         private void DisableControls()
         {
@@ -148,11 +164,6 @@ namespace DLLInjector
                 
             }
             else { MessageBox.Show("No se ha encontrado el archivo " + config.DLLPath); }            
-        }
-
-        private void CancelBT_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            CancelInjection();
         }
     }
 }
