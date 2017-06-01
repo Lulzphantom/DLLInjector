@@ -1,0 +1,35 @@
+﻿<Window x:Name="window" x:Class="DLLInjector.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DLLInjector"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="280" Width="380" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="window_Drop" Loaded="window_Loaded">
+    <Grid x:Name="MainGrid" Margin="20">
+        <Rectangle x:Name="Background" Fill="#FF2D2D30" Stroke="#FF007ACC">
+            <Rectangle.Effect>
+                <DropShadowEffect Direction="0" BlurRadius="15" ShadowDepth="0" Color="#FF007ACC" Opacity="0.6"/>
+            </Rectangle.Effect>
+        </Rectangle>
+        <Border x:Name="TitleBar" BorderBrush="#FF686868" BorderThickness="0,0,0,1" Height="30" VerticalAlignment="Top" Margin="2,2,2,0" MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="#FF2D2D30">
+            <StackPanel Orientation="Horizontal" Margin="1" Height="25">
+                <Image x:Name="Icon" HorizontalAlignment="Left" Height="24" Width="22" Margin="10,0,0,0" Source="Resources/Assets/Icon.ico"/>
+                <Label x:Name="Title" Content="{Binding Title, ElementName=window}" TextOptions.TextFormattingMode="Display"  TextOptions.TextRenderingMode="ClearType" Foreground="#FF999999" Margin="5,0,0,0" HorizontalAlignment="Left" Height="29"/>
+
+            </StackPanel>
+        </Border>
+        <Label Content="Dll:" TextOptions.TextRenderingMode="ClearType" Foreground="White" Margin="103,87,0,0" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top"/>
+        <Label Content="Process Name:" TextOptions.TextRenderingMode="ClearType" Foreground="White" Margin="42,47,0,0" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top"/>
+        <TextBox x:Name="ProcTextBox" HorizontalAlignment="Left" Height="23" Margin="137,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151" TextChanged="ProcTextBox_TextChanged"/>
+        <TextBox x:Name="DllTextBox" HorizontalAlignment="Left" Height="23" Margin="137,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151" IsEnabled="False" TextChanged="DllTextBox_TextChanged"/>
+        <Label Content="Without extension" TextOptions.TextRenderingMode="ClearType" Foreground="#FF686868" Margin="39,61,0,0" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" FontSize="10"/>
+        <CheckBox x:Name="CheckConsole" Content="Show console" HorizontalAlignment="Left" Margin="195,132,0,0" VerticalAlignment="Top" Foreground="White" Click="CheckConsole_Click"/>
+        <CheckBox x:Name="CheckProcExit" Content="Close with process" HorizontalAlignment="Left" Margin="39,132,0,0" VerticalAlignment="Top" Foreground="White" Click="CheckProcExit_Click"/>
+        <Button x:Name="InjectBT" Content="Inject!" HorizontalAlignment="Center" Margin="106,174,106,0" VerticalAlignment="Top" Width="128" Height="35" IsEnabled="False" Click="InjectBT_Click">
+            <Button.Effect>
+                <DropShadowEffect  x:Name="BTShadow" Color="#FF007ACC" ShadowDepth="0" BlurRadius="10" Opacity="0"/>
+            </Button.Effect>
+        </Button>
+    </Grid>
+</Window>
