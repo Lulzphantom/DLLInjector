@@ -34,6 +34,30 @@ namespace DLLInjector
             InitializeComponent();            
         }
 
+
+        private void DisableControls()
+        {
+            ProcTextBox.IsEnabled = false;
+            DllTextBox.IsEnabled = false;
+            CheckConsole.IsEnabled = false;
+            CheckProcExit.IsEnabled = false;
+            InjectBT.IsEnabled = false;
+            BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FF00CC1C"); ;
+            CancelBT.Visibility = Visibility.Visible;
+        }
+
+        private void CancelInjection()
+        {
+            ProcTextBox.IsEnabled = true;
+            DllTextBox.IsEnabled = true;
+            CheckConsole.IsEnabled = true;
+            CheckProcExit.IsEnabled = true;
+            InjectBT.IsEnabled = true;
+            InjectBT.Content = "Inject!";
+            BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FF007ACC"); ;
+            CancelBT.Visibility = Visibility.Hidden;
+        }
+
         //DragMove Function
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -115,8 +139,20 @@ namespace DLLInjector
         //Inject
         private void InjectBT_Click(object sender, RoutedEventArgs e)
         {
-            config.PrcName = ProcTextBox.Text;
-            config.SaveConfig();
+            if (File.Exists(config.DLLPath))
+            {
+                config.PrcName = ProcTextBox.Text;
+                config.SaveConfig();
+                InjectBT.Content = "Waiting for process";
+                DisableControls();
+                
+            }
+            else { MessageBox.Show("No se ha encontrado el archivo " + config.DLLPath); }            
+        }
+
+        private void CancelBT_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            CancelInjection();
         }
     }
 }

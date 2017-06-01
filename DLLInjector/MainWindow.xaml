@@ -31,5 +31,6 @@
                 <DropShadowEffect  x:Name="BTShadow" Color="#FF007ACC" ShadowDepth="0" BlurRadius="10" Opacity="0"/>
             </Button.Effect>
         </Button>
+        <Label x:Name="CancelBT" Content="Cancel" TextOptions.TextRenderingMode="ClearType" Foreground="#FF007ACC" Margin="0,210,0,0" HorizontalAlignment="Center" Height="29" VerticalAlignment="Top" Visibility="Hidden" MouseUp="CancelBT_MouseUp"/>
     </Grid>
 </Window>
