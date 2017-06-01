@@ -158,6 +158,7 @@ namespace DLLInjector
         }
         private void DllTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            DllTextBox.ToolTip = config.DLLPath;
             if (ProcTextBox.Text.Length > 3 && DllTextBox.Text.Length > 3)
             {
                 InjectBT.IsEnabled = true;
@@ -176,7 +177,7 @@ namespace DLLInjector
             config.CheckConfig();
             ProcTextBox.Text = config.PrcName;
             DllTextBox.Text = System.IO.Path.GetFileName(config.DLLPath);
-            CheckConsole.IsChecked = config.console;
+            CheckConsole.IsChecked = config.console;            
             if (config.console == true)
             {
                 ConsoleManager.Show();
@@ -184,7 +185,7 @@ namespace DLLInjector
             CheckProcExit.IsChecked = config.Close;
             InjectWait.Tick += InjectMotherFucker;
             InjectWait.Interval = new TimeSpan(0,0,0,2);
-
+            DllTextBox.ToolTip = config.DLLPath;            
             CloseWait.Tick += WaitToClose;
             InjectWait.Interval = new TimeSpan(0, 0, 0, 2);
         }
@@ -240,7 +241,7 @@ namespace DLLInjector
         private void WaitToClose(object sender, EventArgs e)
         {
             Process[] procs = Process.GetProcessesByName(config.PrcName);
-            if (procs.Length <= 0)
+            if (procs.Length != 0)
             {
                 this.Close();
             }
