@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DLLInjector"
         mc:Ignorable="d"
-        Title="MainWindow" Height="280" Width="380" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="window_Drop" Loaded="window_Loaded">
+        Title="DLL Injector" Height="280" Width="380" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowDrop="True" Drop="window_Drop" Loaded="window_Loaded">
     <Grid x:Name="MainGrid" Margin="20">
         <Rectangle x:Name="Background" Fill="#FF2D2D30" Stroke="#FF007ACC">
             <Rectangle.Effect>
@@ -13,12 +13,16 @@
             </Rectangle.Effect>
         </Rectangle>
         <Border x:Name="TitleBar" BorderBrush="#FF686868" BorderThickness="0,0,0,1" Height="30" VerticalAlignment="Top" Margin="2,2,2,0" MouseLeftButtonDown="Border_MouseLeftButtonDown" Background="#FF2D2D30">
-            <StackPanel Orientation="Horizontal" Margin="1" Height="25">
+            <StackPanel Orientation="Horizontal" Margin="1" Height="25" Width="300" HorizontalAlignment="Left">
                 <Image x:Name="Icon" HorizontalAlignment="Left" Height="24" Width="22" Margin="10,0,0,0" Source="Resources/Assets/Icon.ico"/>
                 <Label x:Name="Title" Content="{Binding Title, ElementName=window}" TextOptions.TextFormattingMode="Display"  TextOptions.TextRenderingMode="ClearType" Foreground="#FF999999" Margin="5,0,0,0" HorizontalAlignment="Left" Height="29"/>
-
             </StackPanel>
         </Border>
+        <Label x:Name="CloseLb" Content="X" TextOptions.TextRenderingMode="ClearType" Foreground="White" Margin="0,4,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Consolas" MouseUp="CloseLb_MouseUp" MouseEnter="CloseLb_MouseEnter" MouseLeave="CloseLb_MouseLeave">
+            <Label.Effect>
+                <DropShadowEffect x:Name="ExitShadow" Color="White" ShadowDepth="0" Opacity="0"/>
+            </Label.Effect>
+        </Label>
         <Label Content="Dll:" TextOptions.TextRenderingMode="ClearType" Foreground="White" Margin="103,87,0,0" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top"/>
         <Label Content="Process Name:" TextOptions.TextRenderingMode="ClearType" Foreground="White" Margin="42,47,0,0" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top"/>
         <TextBox x:Name="ProcTextBox" HorizontalAlignment="Left" Height="23" Margin="137,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151" TextChanged="ProcTextBox_TextChanged"/>

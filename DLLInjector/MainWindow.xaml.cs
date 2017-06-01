@@ -246,5 +246,19 @@ namespace DLLInjector
                 this.Close();
             }
         }
+
+        //ExitBT
+        private void CloseLb_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            this.Close();
+        }
+        private void CloseLb_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ExitShadow.Opacity = 1;
+        }
+        private void CloseLb_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ExitShadow.Opacity = 0;
+        }
     }
 }
