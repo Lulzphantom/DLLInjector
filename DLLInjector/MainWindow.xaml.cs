@@ -79,10 +79,10 @@ namespace DLLInjector
 
         private void DisableControls()
         {
-            ProcTextBox.IsEnabled = false;
-            DllTextBox.IsEnabled = false;
+            ProcTextBox.IsEnabled = false;            
             CheckConsole.IsEnabled = false;
             CheckProcExit.IsEnabled = false;
+            SearchDll.IsEnabled = false;
             InjectBT.IsEnabled = false;
             BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FF00CC1C"); 
             CancelBT.Visibility = Visibility.Visible;
@@ -90,9 +90,9 @@ namespace DLLInjector
 
         private void CancelInjection()
         {
-            ProcTextBox.IsEnabled = true;
-            DllTextBox.IsEnabled = true;
+            ProcTextBox.IsEnabled = true;            
             CheckConsole.IsEnabled = true;
+            SearchDll.IsEnabled = true;
             CheckProcExit.IsEnabled = true;
             InjectBT.IsEnabled = true;
             InjectBT.Content = "Inject!";
@@ -111,7 +111,7 @@ namespace DLLInjector
         //DragDrop DLL
         private void window_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (e.Data.GetDataPresent(DataFormats.FileDrop) && SearchDll.IsEnabled == true)
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);                
                 if (System.IO.Path.GetExtension(files[0]) == ".dll")
@@ -239,7 +239,11 @@ namespace DLLInjector
         //Wait to process close
         private void WaitToClose(object sender, EventArgs e)
         {
-
+            Process[] procs = Process.GetProcessesByName(config.PrcName);
+            if (procs.Length <= 0)
+            {
+                this.Close();
+            }
         }
     }
 }
