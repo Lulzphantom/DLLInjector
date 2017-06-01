@@ -183,7 +183,6 @@ namespace DLLInjector
             CheckProcExit.IsChecked = config.Close;
             InjectWait.Tick += InjectMotherFucker;
             InjectWait.Interval = new TimeSpan(0,0,0,1);
-            RemoteHooking.IpcCreateServer<HackInterface>(ref ChannelName, WellKnownObjectMode.Singleton);
         }
 
         //InjectBT
@@ -216,6 +215,7 @@ namespace DLLInjector
                     return;
                 }
                 pid = procs[0].Id;
+                RemoteHooking.IpcCreateServer<HackInterface>(ref ChannelName, WellKnownObjectMode.Singleton);
                 RemoteHooking.Inject(pid, InjectionOptions.DoNotRequireStrongName, config.DLLPath, config.DLLPath, new Object[] { ChannelName });
             }
             catch (Exception err)
