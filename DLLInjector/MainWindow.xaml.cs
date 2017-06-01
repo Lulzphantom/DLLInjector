@@ -53,6 +53,7 @@ namespace DLLInjector
         Config config = new Config();
         DateTime localDate = DateTime.Now;
         DispatcherTimer InjectWait = new DispatcherTimer();
+        DispatcherTimer CloseWait = new DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();            
@@ -83,7 +84,7 @@ namespace DLLInjector
             CheckConsole.IsEnabled = false;
             CheckProcExit.IsEnabled = false;
             InjectBT.IsEnabled = false;
-            BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FF00CC1C"); ;
+            BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FF00CC1C"); 
             CancelBT.Visibility = Visibility.Visible;
         }
 
@@ -182,7 +183,10 @@ namespace DLLInjector
             }
             CheckProcExit.IsChecked = config.Close;
             InjectWait.Tick += InjectMotherFucker;
-            InjectWait.Interval = new TimeSpan(0,0,0,1);
+            InjectWait.Interval = new TimeSpan(0,0,0,2);
+
+            CloseWait.Tick += WaitToClose;
+            InjectWait.Interval = new TimeSpan(0, 0, 0, 2);
         }
 
         //InjectBT
@@ -218,12 +222,24 @@ namespace DLLInjector
                 RemoteHooking.IpcCreateServer<HackInterface>(ref ChannelName, WellKnownObjectMode.Singleton);
                 RemoteHooking.Inject(pid, InjectionOptions.DoNotRequireStrongName, config.DLLPath, config.DLLPath, new Object[] { ChannelName });
                 Console.WriteLine(localDate.ToShortTimeString() + " - DLL Injected!");
+
+
+                InjectBT.Content = "Dll successfully injected.";
+                BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FFCC0000");
+                if (config.Close == true) { CloseWait.Start(); }
                 InjectWait.Stop();
             }
             catch (Exception err)
             {
-                Console.WriteLine(localDate.ToShortTimeString() + " - There was an error while connecting to target: \r\n {0}", err.ToString());                
+                Console.WriteLine(localDate.ToShortTimeString() + " - There was an error while connecting to target: \r\n {0}", err.ToString());
+                CancelInjection();
             }
+        }
+
+        //Wait to process close
+        private void WaitToClose(object sender, EventArgs e)
+        {
+
         }
     }
 }
