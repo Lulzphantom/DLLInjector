@@ -96,7 +96,7 @@ namespace DLLInjector
             InjectBT.Content = "Inject!";
             BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FF007ACC"); ;
             CancelBT.Visibility = Visibility.Hidden;
-
+            InjectWait.Stop();
             Console.WriteLine(localDate.ToShortTimeString() + " - Injection canceled");
         }
 
