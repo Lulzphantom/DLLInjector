@@ -49,6 +49,7 @@ namespace DLLInjector
     public partial class MainWindow : Window
     {
         private static string ChannelName = null;
+
         Config config = new Config();
         DateTime localDate = DateTime.Now;
         DispatcherTimer InjectWait = new DispatcherTimer();
@@ -182,6 +183,7 @@ namespace DLLInjector
             CheckProcExit.IsChecked = config.Close;
             InjectWait.Tick += InjectMotherFucker;
             InjectWait.Interval = new TimeSpan(0,0,0,1);
+            RemoteHooking.IpcCreateServer<HackInterface>(ref ChannelName, WellKnownObjectMode.Singleton);
         }
 
         //InjectBT
@@ -193,7 +195,7 @@ namespace DLLInjector
                 config.SaveConfig();
                 InjectBT.Content = "Waiting for process";
                 DisableControls();
-                Console.WriteLine(localDate.ToShortTimeString() + " - Waiting for process " + config.PrcName);
+                Console.WriteLine(localDate.ToShortTimeString() + " - Waiting for process " + config.PrcName);                
                 InjectWait.Start();
             }
             else { MessageBox.Show("File not found: " + config.DLLPath);
@@ -205,8 +207,7 @@ namespace DLLInjector
         private void InjectMotherFucker(object sender, EventArgs e)
         {
             try
-            {
-                RemoteHooking.IpcCreateServer<HackInterface>(ref ChannelName, WellKnownObjectMode.Singleton);
+            {                
                 int pid = -1;
                 Process[] procs = Process.GetProcessesByName(config.PrcName);
                 if (procs.Length <= 0)
