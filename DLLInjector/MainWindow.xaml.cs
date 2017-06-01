@@ -217,6 +217,8 @@ namespace DLLInjector
                 pid = procs[0].Id;
                 RemoteHooking.IpcCreateServer<HackInterface>(ref ChannelName, WellKnownObjectMode.Singleton);
                 RemoteHooking.Inject(pid, InjectionOptions.DoNotRequireStrongName, config.DLLPath, config.DLLPath, new Object[] { ChannelName });
+                Console.WriteLine(localDate.ToShortTimeString() + " - DLL Injected!");
+                InjectWait.Stop();
             }
             catch (Exception err)
             {
