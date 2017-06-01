@@ -16,18 +16,42 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Security;
 using Microsoft.Win32;
+using EasyHook;
+using System.Runtime.Remoting;
+using System.Diagnostics;
+using System.Windows.Threading;
 
 namespace DLLInjector
 {
-   
-        /// <summary>
-        /// Lógica de interacción para MainWindow.xaml
-        /// </summary>
-        /// 
 
-        public partial class MainWindow : Window
+    /// <summary>
+    /// Lógica de interacción para MainWindow.xaml
+    /// </summary>
+    /// 
+    public class HackInterface : MarshalByRefObject
     {
+        public void IsInstalled(Int32 InClientPID)
+        {
+            return;
+        }
+
+        public void WriteConsole(String Write)
+        {
+            Console.WriteLine(Write);
+        }
+
+        public void ErrorHandler(Exception err)
+        {
+            Console.WriteLine("Error: {0}", err.ToString());
+        }
+
+    }
+    public partial class MainWindow : Window
+    {
+        private static string ChannelName = null;
         Config config = new Config();
+        DateTime localDate = DateTime.Now;
+        DispatcherTimer InjectWait = new DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();            
@@ -72,6 +96,8 @@ namespace DLLInjector
             InjectBT.Content = "Inject!";
             BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FF007ACC"); ;
             CancelBT.Visibility = Visibility.Hidden;
+
+            Console.WriteLine(localDate.ToShortTimeString() + " - Injection canceled");
         }
 
         //DragMove Function
@@ -97,7 +123,7 @@ namespace DLLInjector
         //Console Show/Hide
         private void CheckConsole_Click(object sender, RoutedEventArgs e)
         {
-            config.Console = CheckConsole.IsChecked.Value;
+            config.console = CheckConsole.IsChecked.Value;
             if (CheckConsole.IsChecked == true)
             {
                 ConsoleManager.Show();                
@@ -148,11 +174,17 @@ namespace DLLInjector
             config.CheckConfig();
             ProcTextBox.Text = config.PrcName;
             DllTextBox.Text = System.IO.Path.GetFileName(config.DLLPath);
-            CheckConsole.IsChecked = config.Console;
+            CheckConsole.IsChecked = config.console;
+            if (config.console == true)
+            {
+                ConsoleManager.Show();
+            }
             CheckProcExit.IsChecked = config.Close;
+            InjectWait.Tick += InjectMotherFucker;
+            InjectWait.Interval = new TimeSpan(0,0,0,1);
         }
 
-        //Inject
+        //InjectBT
         private void InjectBT_Click(object sender, RoutedEventArgs e)
         {
             if (File.Exists(config.DLLPath))
@@ -161,9 +193,34 @@ namespace DLLInjector
                 config.SaveConfig();
                 InjectBT.Content = "Waiting for process";
                 DisableControls();
-                
+                Console.WriteLine(localDate.ToShortTimeString() + " - Waiting for process " + config.PrcName);
+                InjectWait.Start();
             }
-            else { MessageBox.Show("No se ha encontrado el archivo " + config.DLLPath); }            
+            else { MessageBox.Show("File not found: " + config.DLLPath);
+                Console.WriteLine(localDate.ToShortTimeString() + " - File not found: " + config.DLLPath);
+            }
+        }
+
+        //InjectProcess 
+        private void InjectMotherFucker(object sender, EventArgs e)
+        {
+            try
+            {
+                RemoteHooking.IpcCreateServer<HackInterface>(ref ChannelName, WellKnownObjectMode.Singleton);
+                int pid = -1;
+                Process[] procs = Process.GetProcessesByName(config.PrcName);
+                if (procs.Length <= 0)
+                {
+                    Console.WriteLine(localDate.ToShortTimeString() + " - Proccess doesn't exists");                    
+                    return;
+                }
+                pid = procs[0].Id;
+                RemoteHooking.Inject(pid, InjectionOptions.DoNotRequireStrongName, config.DLLPath, config.DLLPath, new Object[] { ChannelName });
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(localDate.ToShortTimeString() + " - There was an error while connecting to target: \r\n {0}", err.ToString());                
+            }
         }
     }
 }

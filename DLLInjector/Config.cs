@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +12,11 @@ namespace DLLInjector
 {
     public class Config
     {
+        DateTime localDate = DateTime.Now;
         string Cfg = "InjectorCfg.ini";
         public string DLLPath = "";
         public string PrcName = "";
-        public bool Console = false;
+        public bool console = false;
         public bool Close = false;
 
         public void CheckConfig()
@@ -25,7 +27,7 @@ namespace DLLInjector
                 IniData data = parser.ReadFile(Cfg);
                 DLLPath = data["Configuration"]["Dll"];
                 PrcName = data["Configuration"]["Process"];
-                Console = Convert.ToBoolean(data["Configuration"]["Console"]);
+                console = Convert.ToBoolean(data["Configuration"]["Console"]);
                 Close = Convert.ToBoolean(data["Configuration"]["Close"]);                
             }
             else
@@ -35,28 +37,43 @@ namespace DLLInjector
         }
         public void SaveConfig()
         {
-            var parser = new FileIniDataParser();
-            IniData data = new IniData();
-            data["Configuration"]["Dll"] = DLLPath;
-            data["Configuration"]["Process"] = PrcName;
-            data["Configuration"]["Console"] = Console.ToString();
-            data["Configuration"]["Close"] = Close.ToString();
-
-            parser.WriteFile(Cfg, data);
+            try
+            {
+                var parser = new FileIniDataParser();
+                IniData data = new IniData();
+                data["Configuration"]["Dll"] = DLLPath;
+                data["Configuration"]["Process"] = PrcName;
+                data["Configuration"]["Console"] = console.ToString();
+                data["Configuration"]["Close"] = Close.ToString();
+                parser.WriteFile(Cfg, data);
+                Console.WriteLine(localDate.ToShortTimeString() + " - Config saved");
+            } catch (Exception ex)
+            {
+                Console.WriteLine(localDate.ToShortTimeString() + " - Exception: " + ex.ToString());
+            }
+           
         }
         void CreateConfig()
         {
-            File.Create(Cfg).Dispose();
+            try
+            {
+                File.Create(Cfg).Dispose();
 
-            var parser = new FileIniDataParser();
-            IniData data = parser.ReadFile(Cfg);            
-            data.Sections.AddSection("Configuration");
-            data["Configuration"].AddKey("Dll", "");
-            data["Configuration"].AddKey("Process", "");
-            data["Configuration"].AddKey("Console", Console.ToString());
-            data["Configuration"].AddKey("Close", Close.ToString());
-
-            parser.WriteFile(Cfg, data);
+                var parser = new FileIniDataParser();
+                IniData data = parser.ReadFile(Cfg);
+                data.Sections.AddSection("Configuration");
+                data["Configuration"].AddKey("Dll", "");
+                data["Configuration"].AddKey("Process", "");
+                data["Configuration"].AddKey("Console", console.ToString());
+                data["Configuration"].AddKey("Close", Close.ToString());
+                parser.WriteFile(Cfg, data);
+                Console.WriteLine(localDate.ToShortTimeString() + " - Config created");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(localDate.ToShortTimeString() + " - Exception: " + ex.ToString());
+            }
+            
         }
     }
 

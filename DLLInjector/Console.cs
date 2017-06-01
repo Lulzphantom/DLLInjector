@@ -13,6 +13,7 @@ namespace DLLInjector
     [SuppressUnmanagedCodeSecurity]
     public static class ConsoleManager
     {
+        
         private const string Kernel32_DllName = "kernel32.dll";
 
         [DllImport(Kernel32_DllName)]
@@ -41,7 +42,7 @@ namespace DLLInjector
             if (!HasConsole)
             {
                 AllocConsole();
-                InvalidateOutAndError();
+                InvalidateOutAndError();                
             }
             //#endif
         }
