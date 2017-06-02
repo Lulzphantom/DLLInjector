@@ -49,7 +49,9 @@ namespace DLLInjector
                 Console.WriteLine(localDate.ToShortTimeString() + " - Config saved");
             } catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(localDate.ToShortTimeString() + " - Exception: " + ex.ToString());
+                Console.ResetColor();
             }
            
         }
@@ -71,7 +73,9 @@ namespace DLLInjector
             }
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(localDate.ToShortTimeString() + " - Exception: " + ex.ToString());
+                Console.ResetColor();
             }
             
         }

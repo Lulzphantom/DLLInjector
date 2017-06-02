@@ -43,7 +43,9 @@ namespace DLLInjector
 
         public void ErrorHandler(Exception err)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(localDate.ToShortTimeString() + " - Error: {0}", err.ToString());
+            Console.ResetColor();
         }
 
     }
@@ -225,9 +227,9 @@ namespace DLLInjector
                 pid = procs[0].Id;
                 RemoteHooking.IpcCreateServer<HackInterface>(ref ChannelName, WellKnownObjectMode.Singleton);
                 RemoteHooking.Inject(pid, InjectionOptions.DoNotRequireStrongName, config.DLLPath, config.DLLPath, new Object[] { ChannelName });
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(localDate.ToShortTimeString() + " - DLL Injected!");
-
-
+                Console.ResetColor();
                 InjectBT.Content = "Dll successfully injected.";
                 BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FFCC0000");
                 if (config.Close == true) { CloseWait.Start(); }
@@ -235,8 +237,10 @@ namespace DLLInjector
             }
             catch (Exception err)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(localDate.ToShortTimeString() + " - There was an error while connecting to target: \r\n {0}", err.ToString());
                 CancelInjection();
+                Console.ResetColor();
             }
         }
 
