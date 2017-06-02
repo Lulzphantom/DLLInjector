@@ -23,11 +23,6 @@ using System.Windows.Threading;
 
 namespace DLLInjector
 {
-
-    /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
-    /// </summary>
-    /// 
     public class HackInterface : MarshalByRefObject
     {
         DateTime localDate = DateTime.Now;
@@ -38,13 +33,13 @@ namespace DLLInjector
 
         public void WriteConsole(String Write)
         {
-            Console.WriteLine(localDate.ToShortTimeString() + " - " + Write);
+            Console.WriteLine(localDate.ToShortTimeString() + " - Hook: " + Write);
         }
 
         public void ErrorHandler(Exception err)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(localDate.ToShortTimeString() + " - Error: {0}", err.ToString());
+            Console.WriteLine(localDate.ToShortTimeString() + " - Hook Error: {0}", err.ToString());
             Console.ResetColor();
         }
 
@@ -228,7 +223,7 @@ namespace DLLInjector
                 RemoteHooking.IpcCreateServer<HackInterface>(ref ChannelName, WellKnownObjectMode.Singleton);
                 RemoteHooking.Inject(pid, InjectionOptions.DoNotRequireStrongName, config.DLLPath, config.DLLPath, new Object[] { ChannelName });
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(localDate.ToShortTimeString() + " - DLL Injected!");
+                Console.WriteLine(localDate.ToShortTimeString() + " - " + System.IO.Path.GetFileName(config.DLLPath) + " injected!");
                 Console.ResetColor();
                 InjectBT.Content = "Dll successfully injected.";
                 BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FFCC0000");
