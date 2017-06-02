@@ -30,6 +30,7 @@ namespace DLLInjector
     /// 
     public class HackInterface : MarshalByRefObject
     {
+        DateTime localDate = DateTime.Now;
         public void IsInstalled(Int32 InClientPID)
         {
             return;
@@ -37,12 +38,12 @@ namespace DLLInjector
 
         public void WriteConsole(String Write)
         {
-            Console.WriteLine(Write);
+            Console.WriteLine(localDate.ToShortTimeString() + " - " + Write);
         }
 
         public void ErrorHandler(Exception err)
         {
-            Console.WriteLine("Error: {0}", err.ToString());
+            Console.WriteLine(localDate.ToShortTimeString() + " - Error: {0}", err.ToString());
         }
 
     }
@@ -74,6 +75,7 @@ namespace DLLInjector
             {
                 config.DLLPath = FileDialog.FileName;
                 DllTextBox.Text = System.IO.Path.GetFileName(FileDialog.FileName);
+                DllTextBox.ToolTip = config.DLLPath;
             }
         }
 
@@ -117,7 +119,8 @@ namespace DLLInjector
                 if (System.IO.Path.GetExtension(files[0]) == ".dll")
                 {
                     DllTextBox.Text = System.IO.Path.GetFileName(files[0]);
-                    config.DLLPath  =  files[0]; 
+                    config.DLLPath  =  files[0];
+                    DllTextBox.ToolTip = config.DLLPath;
                 }                               
             }
         }
@@ -241,7 +244,7 @@ namespace DLLInjector
         private void WaitToClose(object sender, EventArgs e)
         {
             Process[] procs = Process.GetProcessesByName(config.PrcName);
-            if (procs.Length != 0)
+            if (procs.Length == 0)
             {
                 this.Close();
             }
