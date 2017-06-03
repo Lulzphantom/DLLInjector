@@ -12,7 +12,7 @@ namespace DLLInjector
 {
     public class Config
     {
-        DateTime localDate = DateTime.Now;
+        
         string Cfg = "InjectorCfg.ini";
         public string DLLPath = "";
         public string PrcName = "";
@@ -46,11 +46,11 @@ namespace DLLInjector
                 data["Configuration"]["Console"] = console.ToString();
                 data["Configuration"]["Close"] = Close.ToString();
                 parser.WriteFile(Cfg, data);
-                Console.WriteLine(localDate.ToShortTimeString() + " - Config saved");
+                Console.WriteLine(DateTime.Now.ToLongTimeString() + " - Config saved");
             } catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(localDate.ToShortTimeString() + " - Exception: " + ex.ToString());
+                Console.WriteLine(DateTime.Now.ToLongTimeString() + " - Exception: " + ex.ToString());
                 Console.ResetColor();
             }
            
@@ -69,12 +69,12 @@ namespace DLLInjector
                 data["Configuration"].AddKey("Console", console.ToString());
                 data["Configuration"].AddKey("Close", Close.ToString());
                 parser.WriteFile(Cfg, data);
-                Console.WriteLine(localDate.ToShortTimeString() + " - Config created");
+                Console.WriteLine(DateTime.Now.ToLongTimeString() + " - Config created");
             }
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(localDate.ToShortTimeString() + " - Exception: " + ex.ToString());
+                Console.WriteLine(DateTime.Now.ToLongTimeString() + " - Exception: " + ex.ToString());
                 Console.ResetColor();
             }
             

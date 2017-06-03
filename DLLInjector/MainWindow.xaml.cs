@@ -25,7 +25,7 @@ namespace DLLInjector
 {
     public class HackInterface : MarshalByRefObject
     {
-        DateTime localDate = DateTime.Now;
+        
         public void IsInstalled(Int32 InClientPID)
         {
             return;
@@ -33,13 +33,13 @@ namespace DLLInjector
 
         public void WriteConsole(String Write)
         {
-            Console.WriteLine(localDate.ToShortTimeString() + " - Hook: " + Write);
+            Console.WriteLine(DateTime.Now.ToLongTimeString() + " - Hook: " + Write);
         }
 
         public void ErrorHandler(Exception err)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(localDate.ToShortTimeString() + " - Hook Error: {0}", err.ToString());
+            Console.WriteLine(DateTime.Now.ToLongTimeString() + " - Hook Error: {0}", err.ToString());
             Console.ResetColor();
         }
 
@@ -48,8 +48,7 @@ namespace DLLInjector
     {
         private static string ChannelName = null;
 
-        Config config = new Config();
-        DateTime localDate = DateTime.Now;
+        Config config = new Config();        
         DispatcherTimer InjectWait = new DispatcherTimer();
         DispatcherTimer CloseWait = new DispatcherTimer();
         public MainWindow()
@@ -98,7 +97,7 @@ namespace DLLInjector
             BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FF007ACC"); ;
             CancelBT.Visibility = Visibility.Hidden;
             InjectWait.Stop();
-            Console.WriteLine(localDate.ToShortTimeString() + " - Injection canceled");
+            Console.WriteLine(DateTime.Now.ToLongTimeString() + " - Injection canceled");
         }
 
         //DragMove Function
@@ -199,11 +198,11 @@ namespace DLLInjector
                 config.SaveConfig();
                 InjectBT.Content = "Waiting for process";
                 DisableControls();
-                Console.WriteLine(localDate.ToShortTimeString() + " - Waiting for process " + config.PrcName);                
+                Console.WriteLine(DateTime.Now.ToLongTimeString() + " - Waiting for process " + config.PrcName);                
                 InjectWait.Start();
             }
             else { MessageBox.Show("File not found: " + config.DLLPath);
-                Console.WriteLine(localDate.ToShortTimeString() + " - File not found: " + config.DLLPath);
+                Console.WriteLine(DateTime.Now.ToLongTimeString() + " - File not found: " + config.DLLPath);
             }
         }
 
@@ -216,14 +215,14 @@ namespace DLLInjector
                 Process[] procs = Process.GetProcessesByName(config.PrcName);
                 if (procs.Length <= 0)
                 {
-                    Console.WriteLine(localDate.ToShortTimeString() + " - Proccess doesn't exists");                    
+                    Console.WriteLine(DateTime.Now.ToLongTimeString() + " - Proccess doesn't exists");                    
                     return;
                 }
                 pid = procs[0].Id;
                 RemoteHooking.IpcCreateServer<HackInterface>(ref ChannelName, WellKnownObjectMode.Singleton);
                 RemoteHooking.Inject(pid, InjectionOptions.DoNotRequireStrongName, config.DLLPath, config.DLLPath, new Object[] { ChannelName });
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(localDate.ToShortTimeString() + " - " + System.IO.Path.GetFileName(config.DLLPath) + " injected!");
+                Console.WriteLine(DateTime.Now.ToLongTimeString() + " - " + System.IO.Path.GetFileName(config.DLLPath) + " injected!");
                 Console.ResetColor();
                 InjectBT.Content = "Dll successfully injected.";
                 BTShadow.Color = (Color)ColorConverter.ConvertFromString("#FFCC0000");
@@ -233,7 +232,7 @@ namespace DLLInjector
             catch (Exception err)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(localDate.ToShortTimeString() + " - There was an error while connecting to target: \r\n {0}", err.ToString());
+                Console.WriteLine(DateTime.Now.ToLongTimeString() + " - There was an error while connecting to target: \r\n {0}", err.ToString());
                 CancelInjection();
                 Console.ResetColor();
             }
